@@ -1,5 +1,6 @@
 import { createPrivateKey } from "crypto";
 import { expo } from "@better-auth/expo";
+import type { BetterAuthPlugin } from "@better-auth/core";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { betterAuth } from "better-auth";
 import { SignJWT } from "jose";
@@ -85,5 +86,6 @@ export const auth = betterAuth({
     schema: authSchema,
     usePlural: false,
   }),
-  plugins: [expo()],
+  // Work around a variance bug in the published Better Auth Expo plugin typings.
+  plugins: [expo() as unknown as BetterAuthPlugin],
 });
