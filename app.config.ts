@@ -25,7 +25,37 @@ export default function getConfig({ config }: ConfigContext): ExpoConfig {
       package: "com.example.mobileboilerplate",
       predictiveBackGestureEnabled: false,
     },
-    plugins: [...(config.plugins ?? []), "expo-apple-authentication", "expo-router", "expo-web-browser", "expo-sqlite"],
+    plugins: [
+      ...(config.plugins ?? []),
+      [
+        "expo-dev-client",
+        {
+          launchMode: "most-recent",
+        },
+      ],
+      [
+        "expo-file-system",
+        {
+          enableFileSharing: true,
+          supportsOpeningDocumentsInPlace: true,
+        },
+      ],
+      "expo-apple-authentication",
+      "expo-router",
+      "expo-web-browser",
+      "expo-sqlite",
+      [
+        "expo-build-properties",
+        {
+          ios: {
+            deploymentTarget: "17.0",
+          },
+          android: {
+            minSdkVersion: 28,
+          },
+        },
+      ],
+    ],
     experiments: {
       typedRoutes: true,
       reactCompiler: true,
