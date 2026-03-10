@@ -9,7 +9,7 @@ import type { AppStateStatus } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { FullScreenLoader } from "@/components/ui";
-import { createBoilerplateQueryClient, getTrpcClient, TRPCProvider } from "@/lib/trpc";
+import { createBoilerplateQueryClient, getTrpcClient, trpc } from "@/lib/trpc";
 import { useHasHydrated } from "@/store";
 
 function onAppStateChange(status: AppStateStatus) {
@@ -78,11 +78,11 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
-        <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
           <GestureHandlerRootView style={{ flex: 1 }}>
             <RootLayoutContent />
           </GestureHandlerRootView>
-        </TRPCProvider>
+        </trpc.Provider>
         <StatusBar style={"dark"} />
       </QueryClientProvider>
     </SafeAreaProvider>

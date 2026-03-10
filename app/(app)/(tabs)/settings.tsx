@@ -1,11 +1,11 @@
 import { Link } from "expo-router";
 import React from "react";
 import { Pressable, Switch, Text, View } from "react-native";
-import { useQueryClient } from "@tanstack/react-query";
 import { AppleSignInPanel } from "@/components/auth";
 import { EmptyState, ScreenShell, SectionCard, StatusRow } from "@/components/ui";
-import { cloudQueryKeys, useViewer } from "@/hooks/queries";
 import { signOut, useSession } from "@/lib/auth-client";
+import { trpc } from "@/lib/trpc";
+import { useViewer } from "@/hooks/queries";
 import {
   useAppStore,
   useEnableExperimentalUi,
@@ -50,7 +50,7 @@ function PreferenceSwitch({
 
 export default function SettingsScreen() {
   const { data: session } = useSession();
-  const queryClient = useQueryClient();
+  const utils = trpc.useUtils();
   const viewerQuery = useViewer(Boolean(session?.user));
   const preferredAccent = usePreferredAccent();
   const enableHaptics = useEnableHaptics();
@@ -63,7 +63,7 @@ export default function SettingsScreen() {
 
   async function handleSignOut() {
     await signOut();
-    queryClient.removeQueries({ queryKey: cloudQueryKeys.viewer });
+    await utils.viewer.me.reset();
   }
 
   return (
