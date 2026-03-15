@@ -1,8 +1,9 @@
 import React, { useReducer } from "react";
-import { Alert, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { NativeUiShowcase } from "@/components/native-ui";
 import { ScreenShell, SectionCard, StatusRow } from "@/components/ui";
 import type { AccentTheme } from "@/lib/accent-theme";
+import { showToast } from "@/lib/toast";
 
 interface UiShowcaseState {
   accentTheme: AccentTheme;
@@ -47,6 +48,18 @@ function reducer(state: UiShowcaseState, action: UiShowcaseAction): UiShowcaseSt
 export default function UiShowcaseScreen() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  function maybeShowToast(title: string, message: string, tone: "info" | "success" = "success") {
+    if (!state.alertsEnabled) {
+      return;
+    }
+
+    void showToast({
+      message,
+      title,
+      tone,
+    });
+  }
+
   return (
     <ScreenShell
       title={"Native UI"}
@@ -86,10 +99,14 @@ export default function UiShowcaseScreen() {
           dispatch({ type: "setIntensity", value });
         }}
         onPrimaryAction={() => {
-          Alert.alert("Primary action", "Swap this callback with your own product workflow.");
+          maybeShowToast("Primary action", "Swap this callback with your own product workflow.");
         }}
         onSecondaryAction={() => {
-          Alert.alert("Secondary flow", "This starter leaves the business logic intentionally generic.");
+          maybeShowToast(
+            "Secondary flow",
+            "This starter leaves the business logic intentionally generic.",
+            "info",
+          );
         }}
       />
 

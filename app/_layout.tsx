@@ -1,6 +1,7 @@
 import "@/globals.css";
 import { QueryClientProvider, focusManager } from "@tanstack/react-query";
 import type { QueryCacheNotifyEvent } from "@tanstack/query-core";
+import { Toaster } from "burnt/web";
 import { Slot } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
@@ -83,6 +84,7 @@ export default function RootLayout() {
             <RootLayoutContent />
           </GestureHandlerRootView>
         </trpc.Provider>
+        <Toaster position={"top-center"} richColors />
         <StatusBar style={"dark"} />
       </QueryClientProvider>
     </SafeAreaProvider>
