@@ -15,7 +15,7 @@ interface ProfileDraft {
 }
 
 export default function AccountScreen() {
-  const { data: session } = useSession();
+  const { data: session, isPending: isSessionPending } = useSession();
   const viewerQuery = useViewer(Boolean(session?.user));
   const updateMutation = useUpdateViewerProfile();
   const [draft, setDraft] = useState<ProfileDraft | null>(null);
@@ -36,6 +36,10 @@ export default function AccountScreen() {
     const profile = viewerQuery.data?.profile;
     return `${viewerQuery.data?.user.id ?? "anon"}-${profile?.displayName ?? ""}-${profile?.bio ?? ""}-${profile?.accentTheme ?? "blue"}-${profile?.emailUpdatesEnabled ?? false}`;
   }, [viewerQuery.data]);
+
+  if (isSessionPending) {
+    return null;
+  }
 
   if (!session?.user) {
     return <Redirect href={"/settings"} />;

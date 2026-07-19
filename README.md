@@ -4,7 +4,7 @@ A native-first Expo starter modeled on Palate's reusable architecture. It includ
 
 ## Prerequisites
 
-- Node.js 24+
+- Node.js 24
 - pnpm 10
 - Xcode or Android Studio for development builds
 - PostgreSQL for the backend
@@ -14,8 +14,7 @@ A native-first Expo starter modeled on Palate's reusable architecture. It includ
 ```bash
 pnpm install
 cp .env.example .env
-pnpm auth:generate
-pnpm db:generate
+pnpm setup
 pnpm server:dev
 ```
 
@@ -38,6 +37,7 @@ pnpm android      # Run Android build
 pnpm server:dev   # Hono dev server
 pnpm build        # Build backend bundle
 pnpm start        # Start backend bundle
+pnpm setup        # Generate auth/schema files and apply database migrations
 pnpm typecheck
 pnpm lint
 pnpm format:check
@@ -45,4 +45,7 @@ pnpm format:check
 
 ## Environment
 
-See [`.env.example`](/Users/jonlucadecaro/Documents/Other/mobile-boilerplate/.env.example) for required values. Apple sign-in remains disabled until the Apple provider variables are configured.
+See [`.env.example`](.env.example) for required values. During local development, leaving
+`EXPO_PUBLIC_API_URL` empty makes the app use the Expo development server's host, including on a
+physical device, with simulator/emulator fallbacks. Set it to the public backend URL for production
+builds. Apple sign-in remains disabled until all Apple provider variables are configured.
